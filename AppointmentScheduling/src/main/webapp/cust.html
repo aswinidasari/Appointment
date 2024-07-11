@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Management</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .customers-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 800px;
+            margin-top: 50px; /* Added margin-top to push the content down */
+        }
+        .customers-container h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .customer {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            margin-bottom: 10px;
+        }
+        .customer:last-child {
+            border-bottom: none;
+        }
+        .customer p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top"> <!-- Added fixed-top class -->
+        <a class="navbar-brand" href="#">Appointment Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="main.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="customers-container">
+        <h1>View Customers</h1>
+        <div id="customers-list">
+            <!-- Customers will be dynamically loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch customers from servlet and display dynamically
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchCustomers();
+        });
+
+        function fetchCustomers() {
+            fetch('Customer_View')
+                .then(response => response.json())
+                .then(data => {
+                    const customersList = document.getElementById('customers-list');
+                    customersList.innerHTML = ''; // Clear previous content
+
+                    data.forEach(customer => {
+                        const customerDiv = document.createElement('div');
+                        customerDiv.classList.add('customer');
+
+                        const customerId = document.createElement('p');
+                        customerId.textContent = 'Customer ID: ' + customer.id;
+
+                        const customerName = document.createElement('p');
+                        customerName.textContent = 'Name: ' + customer.name;
+
+                        const customerEmail = document.createElement('p');
+                        customerEmail.textContent = 'Email: ' + customer.email;
+
+                        const customerPhone = document.createElement('p');
+                        customerPhone.textContent = 'Phone: ' + customer.phone;
+
+                        customerDiv.appendChild(customerId);
+                        customerDiv.appendChild(customerName);
+                        customerDiv.appendChild(customerEmail);
+                        customerDiv.appendChild(customerPhone);
+
+                        customersList.appendChild(customerDiv);
+                    });
+                })
+                .catch(error => console.error('Error fetching customers:', error));
+        }
+    </script>
+</body>
+</html>

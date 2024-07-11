@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+        <welcome-file>Cust_Create.html</welcome-file>
+        <welcome-file>Appoint_Insert.html</welcome-file>
+        <welcome-file>Reschedule_Appoint.html</welcome-file>
+        <welcome-file>reschedule.html</welcome-file>
+        <welcome-file>cancel.html</welcome-file>
+        <welcome-file>view.html</welcome-file>
+        <welcome-file>signup.html</welcome-file>
+        <welcome-file>Cust_Delete.html</welcome-file>
+        <welcome-file>cust.html</welcome-file>
+         <!--Add more welcome-files as needed -->
+    </welcome-file-list>
+</web-app>

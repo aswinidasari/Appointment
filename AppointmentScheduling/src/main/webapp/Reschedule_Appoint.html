@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- jQuery UI CSS -->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- jQuery UI Timepicker Addon CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.css">
+    <style>
+        body {
+           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            margin: 0;
+        }
+        .navbar {
+            background-color: #000000;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: #ffffff !important;
+        }
+        .navbar-nav .nav-link {
+            color: #ffcc00;
+            padding: 10px 15px;
+            transition: color 0.3s ease-in-out;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #ffd700; /* A slightly different shade of yellow for hover */
+        }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 500px; /* Adjusted width */
+            margin: auto;
+            margin-top: 50px;
+        }
+        .form-container h1 {
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px; /* Adjusted font size */
+            color: #333; /* Adjusted text color */
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333; /* Adjusted text color */
+        }
+        .form-container input, .form-container textarea, .form-container select {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Ensure padding and border are included in width */
+        }
+        .form-container button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 40%;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .form-container div button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5cm;
+        }
+        .form-container div button:hover {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Appointment Management</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="main.html">Home</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="form-container">
+        <h1>Reschedule Appointment</h1>
+        <form id="rescheduleForm" action="Appoint_Reschedule" method="post">
+            <label for="appointment_id">Appointment ID:</label>
+            <input type="number" id="appointment_id" name="appointment_id" required>
+
+            <label for="new_date">New Date:</label>
+            <input type="text" id="new_date" name="new_date" required placeholder="Select date">
+
+            <label for="new_time">New Time:</label>
+            <input type="text" id="new_time" name="new_time" required placeholder="Select time">
+
+            <label for="new_reminder_message">New Reminder Message (optional):</label>
+            <input type="text" id="new_reminder_message" name="new_reminder_message">
+
+            <label for="new_reminder_delay">New Reminder Delay (in minutes, optional):</label>
+            <input type="number" id="new_reminder_delay" name="new_reminder_delay">
+
+            <!-- Hidden field to store the combined date and time -->
+            <input type="hidden" id="new_datetime" name="new_datetime">
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- jQuery and jQuery UI JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- jQuery UI Timepicker Addon JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ui-timepicker-addon/1.6.3/jquery-ui-timepicker-addon.min.js"></script>
+    <script>
+        $(function() {
+            // Initialize the Datepicker
+            $("#new_date").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0, // Set minimum date to today
+                onSelect: function(dateText) {
+                    var selectedDate = $(this).datepicker('getDate');
+                    var today = new Date();
+                    today.setHours(0,0,0,0);  // Set today's date to midnight for comparison
+                    if (selectedDate.setHours(0,0,0,0) == today) {
+                        // If today is selected, set the minimum time to the current time
+                        $('#new_time').timepicker('option', 'minTime', new Date());
+                    } else {
+                        // Otherwise, remove any time restriction
+                        $('#new_time').timepicker('option', 'minTime', '00:00');
+                    }
+                }
+            });
+
+            // Initialize the Timepicker
+            $("#new_time").timepicker({
+                timeFormat: 'HH:mm:ss',
+                controlType: 'select',
+                minTime: 0 // Default minimum time
+            });
+
+            // Check and update timepicker when the date is changed
+            $('#new_date').on('change', function() {
+                var selectedDate = $(this).datepicker('getDate');
+                var today = new Date();
+                today.setHours(0,0,0,0);  // Set today's date to midnight for comparison
+                if (selectedDate.setHours(0,0,0,0) == today) {
+                    $('#new_time').timepicker('option', 'minTime', new Date());
+                } else {
+                    $('#new_time').timepicker('option', 'minTime', '00:00');
+                }
+            });
+
+            // Combine date and time before form submission
+            $('#rescheduleForm').on('submit', function() {
+                var date = $('#new_date').val();
+                var time = $('#new_time').val();
+                if (date && time) {
+                    $('#new_datetime').val(date + ' ' + time);
+                } else {
+                    alert("Please select both date and time.");
+                    return false; // Prevent form submission if date or time is missing
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Appointment</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<style>
+    /* Existing styles... */
+
+    /* Modify form input style */
+    .form-container input[type="number"] {
+        /* Add your custom styles here */
+        border: 2px solid #007bff; /* Blue border */
+        border-radius: 6px;
+        padding: 10px;
+    }
+
+    /* Modify form button style */
+    .form-container button[type="submit"] {
+        /* Add your custom styles here */
+        background-color: #dc3545; /* Red background */
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 12px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    /* Modify form button hover style */
+    .form-container button[type="submit"]:hover {
+        background-color: #c82333; /* Darker red on hover */
+    }
+
+    /* Modify error modal style */
+    #errorModal .modal-content {
+        /* Add your custom styles here */
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Modify error modal title style */
+    #errorModal .modal-title {
+        /* Add your custom styles here */
+        color: #dc3545; /* Red title */
+    }
+
+    /* Modify error modal body style */
+    #errorModal .modal-body {
+        /* Add your custom styles here */
+        color: #333; /* Dark text */
+    }
+
+    /* Modify error modal close button style */
+    #errorModal .modal-footer .btn-danger {
+        /* Add your custom styles here */
+        background-color: #007bff; /* Blue close button */
+        border: none;
+        border-radius: 6px;
+        padding: 10px 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    /* Modify error modal close button hover style */
+    #errorModal .modal-footer .btn-danger:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Add additional custom styles as needed */
+</style>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Appointment Management</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="main.html">Home</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-container">
+        <h1>Cancel Appointment</h1>
+        <form action="Appoint_Cancel" method="post" onsubmit="return validateForm()">
+            <label for="appointment_id">Appointment ID:</label>
+            <input type="number" id="appointment_id" name="appointment_id" placeholder="Enter Appointment ID" required>
+
+            <button type="submit">Cancel Appointment</button>
+        </form>
+    </div>
+</div>
+
+<!-- Error Modal -->
+<div id="errorModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Error</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Please enter a valid Appointment ID.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for form validation -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    function validateForm() {
+        var appointmentId = document.getElementById("appointment_id").value;
+
+        // Basic validation to check if Appointment ID is a number
+        if (isNaN(appointmentId) || appointmentId <= 0) {
+            // Displaying the error message in a Bootstrap modal
+            $('#errorModal').modal('show');
+            return false;
+        }
+        return true;
+    }
+</script>
+</body>
+</html>
